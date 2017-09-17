@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FacebookIdentityInterface.h"
+#include "Interfaces/FacebookIdentityInterface.h"
 #include "Kismet/BlueprintAsyncActionBase.h"
 #include "FacebookForUnrealBPLibrary.h"
 #include "LoginCallback.generated.h"

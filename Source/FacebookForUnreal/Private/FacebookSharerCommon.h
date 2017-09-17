@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FacebookSharerInterface.h"
+#include "Interfaces/FacebookSharerInterface.h"
 #include "EActionTypes.h"
 
 /** Facebook integration of sharing posts to Facebook */

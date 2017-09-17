@@ -21,11 +21,11 @@ public:
 void FFacebookForUnrealModule::StartupModule()
 {
 
-#if PLATFORM_ANDROID || PLATFORM_IOS
+//#if PLATFORM_ANDROID || PLATFORM_IOS
 	IdentityInterface = MakeShareable(new FFacebookIdentityCommon());
 	SharerInterface = MakeShareable(new FFacebookSharerCommon());
 	UtilsInterface = MakeShareable(new FFacebookUtilsCommon());
-#endif
+//#endif
 	
 }
 

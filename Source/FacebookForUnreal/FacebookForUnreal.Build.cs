@@ -5,9 +5,9 @@ using UnrealBuildTool;
 
 public class FacebookForUnreal : ModuleRules
 {
-	public FacebookForUnreal(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+    public FacebookForUnreal(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
         string EnginePath = Path.GetFullPath(BuildConfiguration.RelativeEnginePath);
         string FacebookSdkPath = EnginePath + "Plugins/Online/OnlineSubsystemFacebook/Source/ThirdParty/Android/NotForLicensees/FacebookSDK/";
@@ -25,64 +25,45 @@ public class FacebookForUnreal : ModuleRules
         }
 
 
-        PublicIncludePaths.AddRange(
-			new string[] {
-				"FacebookForUnreal/Public"
-				
-				// ... add public include paths required here ...
-			}
-			);
-				
-		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-				"FacebookForUnreal/Private",
-				
-				// ... add other private include paths required here ...
-			}
-			);
-			
-		
-		PublicDependencyModuleNames.AddRange(
-			new string[]
-			{
-				"Core",
-                "OnlineSubsystemFacebook"
-				
-				// ... add other public dependencies that you statically link with here ...
-			}
-			);
-			
-		
-		PrivateDependencyModuleNames.AddRange(
-			new string[]
-			{
-				"CoreUObject",
-				"Engine",
-				"Slate",
-				"SlateCore",
+        PublicIncludePaths.AddRange( new string[] 
+            {
+                "FacebookForUnreal/Public"
+            });
+
+
+        PrivateIncludePaths.AddRange( new string[] { "FacebookForUnreal/Private" });
+
+
+        PublicDependencyModuleNames.AddRange(new string[]
+            {
+                "Core",
                 "OnlineSubsystem",
                 "OnlineSubsystemFacebook"
-				// ... add private dependencies that you statically link with here ...	
-			}
-			);
-		
-		
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
-				// ... add any modules that your module loads dynamically here ...
-			}
-			);
+            });
 
-		if (Target.Platform == UnrealTargetPlatform.Android)
-		{
-			System.Console.WriteLine("Loading FacebookForUnreal_UPL");
+
+        PrivateDependencyModuleNames.AddRange( new string[] 
+            {
+                "CoreUObject",
+                "Engine",
+                "Slate",
+                "SlateCore",
+                "OnlineSubsystem",
+                "OnlineSubsystemFacebook"
+            });
+
+
+        DynamicallyLoadedModuleNames.AddRange(
+            new string[] { });
+
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            System.Console.WriteLine("Loading FacebookForUnreal_UPL");
 
 
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, BuildConfiguration.RelativeEnginePath);
-				AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(PluginPath, "FacebookForUnreal_UPL.xml")));
-		}
+            AdditionalPropertiesForReceipt.Add(new ReceiptProperty("AndroidPlugin", Path.Combine(PluginPath, "FacebookForUnreal_UPL.xml")));
+        }
 
 
 

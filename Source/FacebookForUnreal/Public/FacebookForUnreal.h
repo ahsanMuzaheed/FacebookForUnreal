@@ -3,9 +3,9 @@
 #pragma once
 
 #include "ModuleManager.h"
-#include "FacebookIdentityInterface.h"
-#include "FacebookSharerInterface.h"
-#include "FacebookUtilsInterface.h"
+#include "Interfaces/FacebookIdentityInterface.h"
+#include "Interfaces/FacebookSharerInterface.h"
+#include "Interfaces/FacebookUtilsInterface.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(UEFB, Log, All);
 
@@ -36,6 +36,7 @@ public:
 		return UtilsInterface;
 	}
 
+protected:
 	FFacebookIdentityCommonPtr IdentityInterface;
 	FFacebookSharerCommonPtr SharerInterface;
 	FFacebookUtilsCommonPtr UtilsInterface;

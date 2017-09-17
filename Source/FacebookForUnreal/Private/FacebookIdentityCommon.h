@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FacebookIdentityInterface.h"
+#include "Interfaces/FacebookIdentityInterface.h"
+#include "Online.h"
 
 /**
  * Facebook integration of Facebook user's identity
