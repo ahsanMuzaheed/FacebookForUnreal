@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--GearVR plugin additions-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- init section is always evaluated once per architecture -->
+	<trace enable="true"/>
+	<init>
+		<log text="FacebookForUnreal init"/>	
+    <setStringFromProperty result="ClientId" ini="Engine" section="OnlineSubsystemFacebook" property="ClientId" default="0"/>
+	</init>
+
+  <androidManifestUpdates>
+    <setElement result="FBProvider" value="provider" />
+		<addAttribute tag="$FBProvider" name="android:name" value="com.facebook.FacebookContentProvider" />
+		<addAttribute tag="$FBProvider" name="android:authorities" value="com.facebook.app.FacebookContentProvider$S(ClientId)" />
+		<addAttribute tag="$FBProvider" name="android:exported" value="true" />
+		<addElement tag="application" name="FBProvider" />
+  </androidManifestUpdates>
+
+  <!-- optional additions to proguard -->
+  <proguardAdditions>
+  </proguardAdditions>
+
+  <resourceCopies>
+  	<log text="Copying Bolts directory"/>
+    <copyDir src="$S(PluginDir)/ThirdParty/Android/Bolts/"
+        dst="$S(BuildDir)/libs/" />
+    <copyDir src="$S(PluginDir)/ThirdParty/Android/Bolts/"
+        dst="$S(BuildDir)/libs/" />
+  </resourceCopies>
+    
+  <prebuildCopies>
+    <log text="Copying Facebook buildtime files to staging"/>
+				<copyDir src="$S(PluginDir)/ThirdParty/Android/Java"
+					dst = "$S(BuildDir)/src/com/Horizon/Brick/" /> 	
+  </prebuildCopies>
+  
+  <AARImports>
+    <insertValue value="repository $S(PluginDir)/ThirdParty/Android/NotForLicensees"/>
+		<insertNewline/>
+		<insertValue value="FacebookSDK,facebook-android-sdk,4.19.0" />
+		<insertNewline/>
+  </AARImports>
+  
+  <!-- optional additions to the GameActivity imports in GameActivity.java -->
+	<gameActivityImportAdditions>
+    <insert>
+// Horizon imports
+import com.Horizon.Brick.FacebookShare;
+
+// FacebookUtils imports
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.os.Build;
+
+// Facebook imports
+import com.facebook.FacebookSdk;
+    </insert>
+	</gameActivityImportAdditions>
+	
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+    <insert>
+      private FacebookShare mFacebookShare;
+      
+      public void AndroidThunkJava_Facebook_ShareDialog(String ContentTitle, String ContentDescription,
+                                                         String imageLink, int actionType) {
+        if (mFacebookShare != null) {
+            mFacebookShare.shareDialog(ContentTitle, ContentDescription, imageLink, actionType);
+        }
+    }
+
+    public void AndroidThunkJava_Facebook_MessageDialog(String ContentTitle, String ContentDescription,
+                                                           String imageLink, int actionType) {
+        if (mFacebookShare != null) {
+            mFacebookShare.messageDialog(ContentTitle, ContentDescription, imageLink, actionType);
+        }
+    }
+
+    public void AndroidThunkJava_Facebook_GameRequest(String message) {
+        if (mFacebookShare != null) {
+            mFacebookShare.GameRequest(message);
+        }
+    }
+
+    public boolean AndroidThunkJava_IsInternetConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            Network[] networks = cm.getAllNetworks();
+            NetworkInfo networkInfo;
+            for (Network networkLoc : networks) {
+                networkInfo = cm.getNetworkInfo(networkLoc);
+                if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            if (cm != null) {
+                NetworkInfo[] networkInfo = cm.getAllNetworkInfo();
+                if (networkInfo != null) {
+                    for (NetworkInfo networkInfoLoc : networkInfo) {
+                        if (networkInfoLoc.getState() == NetworkInfo.State.CONNECTED) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    </insert>
+	</gameActivityClassAdditions>
+	
+	<!-- optional additions to GameActivity onCreate metadata reading in GameActivity.java -->
+	<gameActivityReadMetadataAdditions>
+	</gameActivityReadMetadataAdditions>
+	
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+    <insert>
+      mFacebookShare = new FacebookShare(this);
+      mFacebookShare.Init();
+    </insert>
+	</gameActivityOnCreateAdditions>
+
+	<!-- optional additions to GameActivity onDestroy in GameActivity.java -->
+	<gameActivityOnDestroyAdditions>
+	</gameActivityOnDestroyAdditions>
+	
+	
+	<!-- optional additions to GameActivity onStart in GameActivity.java -->
+	<gameActivityOnStartAdditions>
+	</gameActivityOnStartAdditions>
+
+	<!-- optional additions to GameActivity onStop in GameActivity.java -->
+	<gameActivityOnStopAdditions>
+	</gameActivityOnStopAdditions>
+	
+
+	<!-- optional additions to GameActivity onPause in GameActivity.java	-->
+	<gameActivityOnPauseAdditions>
+	</gameActivityOnPauseAdditions>
+
+
+	<!-- optional additions to GameActivity onResume in GameActivity.java	-->
+	<gameActivityOnResumeAdditions>
+	</gameActivityOnResumeAdditions>
+
+
+	<!-- optional additions to GameActivity onActivityResult in GameActivity.java -->
+	<gameActivityOnActivityResultAdditions>
+    <insert>
+      if (FacebookSdk.isFacebookRequestCode(requestCode)){
+            if (mFacebookShare != null) {
+                mFacebookShare.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    </insert>
+  </gameActivityOnActivityResultAdditions>
+	
+
+	<!-- optional libraries to load in GameActivity.java before libUE4.so -->
+	<soLoadLibrary>
+	</soLoadLibrary>
+</root>
