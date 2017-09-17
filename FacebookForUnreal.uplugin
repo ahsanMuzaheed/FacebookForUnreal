@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "FacebookForUnreal",
-	"Description": "",
+	"Description": "Facebook Integration Plugin",
 	"Category": "Other",
 	"CreatedBy": "Zoebert Cachero",
 	"CreatedByURL": "",
