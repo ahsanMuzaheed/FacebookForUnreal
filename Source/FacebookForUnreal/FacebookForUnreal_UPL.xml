@@ -6,6 +6,7 @@
 	<init>
 		<log text="FacebookForUnreal init"/>	
     <setStringFromProperty result="ClientId" ini="Engine" section="OnlineSubsystemFacebook" property="ClientId" default="0"/>
+    <setBoolFromProperty result="bEnableGradle" ini="Engine" section="/Script/AndroidRuntimeSettings.AndroidRuntimeSettings" property="bEnableGradle" default="false"/>
 	</init>
 
   <androidManifestUpdates>
@@ -21,11 +22,15 @@
   </proguardAdditions>
 
   <resourceCopies>
-  	<log text="Copying Bolts directory"/>
-    <copyDir src="$S(PluginDir)/ThirdParty/Android/Bolts/"
-        dst="$S(BuildDir)/libs/" />
-    <copyDir src="$S(PluginDir)/ThirdParty/Android/Bolts/"
-        dst="$S(BuildDir)/libs/" />
+    <if condition="bEnableGradle">
+      <true>
+        <log text="Gradle build is enabled"/>
+      </true>
+      <false>
+        <log text="Copying Bolts directory"/>
+        <copyDir src="$S(PluginDir)/ThirdParty/Android/Bolts/"
+            dst="$S(BuildDir)/libs/" />
+      </false>
   </resourceCopies>
     
   <prebuildCopies>
