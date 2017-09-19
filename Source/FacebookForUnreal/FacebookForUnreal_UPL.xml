@@ -31,6 +31,8 @@
         <copyDir src="$S(PluginDir)/ThirdParty/Android/Bolts/"
             dst="$S(BuildDir)/libs/" />
       </false>
+    </if>
+  	
   </resourceCopies>
     
   <prebuildCopies>

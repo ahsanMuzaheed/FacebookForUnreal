@@ -12,7 +12,6 @@ public class FacebookForUnreal : ModuleRules
         string EnginePath = Path.GetFullPath(BuildConfiguration.RelativeEnginePath);
         string FacebookSdkPath = EnginePath + "Plugins/Online/OnlineSubsystemFacebook/Source/ThirdParty/Android/NotForLicensees/FacebookSDK/";
 
-
         if (Directory.Exists(FacebookSdkPath))
         {
             System.Console.WriteLine("Directory for OnlineSubsystemFacebook already exists");

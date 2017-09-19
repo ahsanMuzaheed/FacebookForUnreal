@@ -68,12 +68,13 @@ FString FFacebookIdentityCommon::GetFacebookAccessToken()
 bool FFacebookIdentityCommon::IsFacebookLoggedIn()
 {
 	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called IsFacebookLoggedIn in FacebookIdentityCommon"));
+#if PLATFORM_ANDROID
 	ELoginStatus::Type LoginStatus = FBSubsystem->GetIdentityInterface()->GetLoginStatus(0);
 	if (LoginStatus == ELoginStatus::LoggedIn)
 	{
 		return true;
 	}
-
+#endif
 	return false;
 }
 
