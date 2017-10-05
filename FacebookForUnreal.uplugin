@@ -13,13 +13,18 @@
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"Installed": false,
-	"Modules": [
-		{
-			"Name": "FacebookForUnreal",
-			"Type": "Runtime",
-			"LoadingPhase": "PreLoadingScreen"
-		}
-	],
+  "Modules": [
+    {
+      "Name": "FacebookForUnreal",
+      "Type": "Runtime",
+      "LoadingPhase": "PreLoadingScreen"
+    },
+    {
+      "Name": "FacebookForUnrealEditor",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ],
 	"Plugins": [
 		{
 			"Name": "OnlineSubsystemFacebook",

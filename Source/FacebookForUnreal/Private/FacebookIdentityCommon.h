@@ -9,14 +9,13 @@
 /**
  * Facebook integration of Facebook user's identity
  */
+
 class FFacebookIdentityCommon : public IFacebookIdentityInterface
 {
 
 public:
 	FFacebookIdentityCommon();
 	virtual ~FFacebookIdentityCommon();
-
-	IOnlineSubsystem* FBSubsystem;
 
 	virtual void Init();
 
@@ -30,6 +29,11 @@ public:
 
 	virtual IOnlineSubsystem* GetFbSubsystem() override;
 
-	DEFINE_UEFB_DELEGATE_ONE_PARAM(LoginComplete, FString);
+	virtual FString GetLoginStatusString(ELoginStatus::Type EnumValue);
+
+	//DEFINE_UEFB_DELEGATE_ONE_PARAM(LoginComplete, FString);
+
+protected:
+	IOnlineSubsystem* FBSubsystem;
 
 };

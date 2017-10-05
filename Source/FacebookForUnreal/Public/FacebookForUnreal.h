@@ -7,7 +7,7 @@
 #include "Interfaces/FacebookSharerInterface.h"
 #include "Interfaces/FacebookUtilsInterface.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(UEFB, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(FacebookForUnrealLog, Log, All);
 
 typedef TSharedPtr<IFacebookIdentityInterface, ESPMode::ThreadSafe> FFacebookIdentityCommonPtr;
 typedef TSharedPtr<IFacebookSharerInterface, ESPMode::ThreadSafe> FFacebookSharerCommonPtr;
@@ -36,7 +36,7 @@ public:
 		return UtilsInterface;
 	}
 
-protected:
+//protected:
 	FFacebookIdentityCommonPtr IdentityInterface;
 	FFacebookSharerCommonPtr SharerInterface;
 	FFacebookUtilsCommonPtr UtilsInterface;

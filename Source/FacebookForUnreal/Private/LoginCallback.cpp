@@ -14,27 +14,16 @@ ULoginCallback::~ULoginCallback()
 	
 ULoginCallback* ULoginCallback::FacebookLogin()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called FacebookLogin in LoginCallback"));
+	UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("Called FacebookLogin in LoginCallback"));
 
 	ULoginCallback* proxy = NewObject<ULoginCallback>();
 
-	//IFacebookIdentityInterface* IFBIntLoc = *IFacebookForUnreal::Get().GetIdentityInterface();
-
-	//*(proxy->FBInterface) = *(IFacebookForUnreal::Get().GetIdentityInterface());
-	//proxy->FBInterfacePtr = IFacebookForUnreal::Get().GetIdentityInterface();
 	return proxy;
 }
 
 void ULoginCallback::Activate()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called Activate in LoginCallback"));
-
-	//FFacebookIdentityCommon* FbIdentity = StaticCast<FFacebookIdentityCommon*>(FBInterface);
-
-	//IOnlineSubsystem* FbSubsLoc2 = nullptr;
-	//FbSubsLoc2 = FBInterface->GetFbSumessagebsystem();
-
-
+	UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("Called Activate in LoginCallback"));
 	IOnlineSubsystem* FbSubsLoc = IFacebookForUnreal::Get().GetIdentityInterface()->GetFbSubsystem();
 
 	IdentityPtr = FbSubsLoc->GetIdentityInterface();
@@ -42,7 +31,7 @@ void ULoginCallback::Activate()
 	//Assign Delegate Function to handle login
 	IdentityPtr->AddOnLoginCompleteDelegate_Handle(0, FOnLoginCompleteDelegate::CreateUObject(this, &ULoginCallback::ReturnAccessToken));
 
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Will now start calling FacebookLogin within Activate"));
+	UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("Will now start calling FacebookLogin within Activate"));
 
 	IFacebookForUnreal::Get().GetIdentityInterface()->FacebookLogin();
 }
@@ -50,18 +39,19 @@ void ULoginCallback::Activate()
 
 void ULoginCallback::ReturnAccessToken(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& Error)
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called ReturnAccessToken in LoginCallback"));
+	UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("Called ReturnAccessToken in LoginCallback"));
 
 	//Returns AuthToken
 	FString AccessToken = IFacebookForUnreal::Get().GetIdentityInterface()->GetFacebookAccessToken();
 
 	if (AccessToken.IsEmpty()) {
-		UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("ReturnAccessToken OnFailure"));
+		UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("ReturnAccessToken OnFailure"));
 		OnFailure.Broadcast("No Access Token!");
 	} 
 	else
 	{
-		UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("ReturnAccessToken OnSuccess"));
+		UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("ReturnAccessToken OnSuccess"));
+
 		//Broadcast this delegate which will contain the AuthToken to be used by the GSFacebookConnectRequest node
 		OnSuccess.Broadcast(AccessToken);
 	}

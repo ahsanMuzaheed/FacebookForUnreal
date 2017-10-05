@@ -26,7 +26,7 @@ FFacebookSharerCommon::FFacebookSharerCommon()
 	{
 
 		FacebookShareDialogMethod = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Facebook_ShareDialog", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V", false);
-		FacebookMessageDialogMethod = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Facebook_MessageDialog", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V", false);
+		FacebookMessageDialogMethod = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Facebook_MessageDialog", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V", false);
 		FacebookGameRequestMethod = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Facebook_GameRequest", "(Ljava/lang/String;)V", false);
 		CHECK_JNI_METHOD(FacebookShareDialogMethod);
 		CHECK_JNI_METHOD(FacebookMessageDialogMethod);
@@ -49,9 +49,9 @@ void FFacebookSharerCommon::FacebookShareDialog(const FString& title, const FStr
 	FFacebookSharerCommon::AndroidThunkCpp_Facebook_ShareDialog(title, description, imageLink, actionType);
 }
 
-void FFacebookSharerCommon::FacebookMessageDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType)
+void FFacebookSharerCommon::FacebookMessageDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType, const FString& link)
 {
-	FFacebookSharerCommon::AndroidThunkCpp_Facebook_MessageDialog(title, description, imageLink, actionType);
+	FFacebookSharerCommon::AndroidThunkCpp_Facebook_MessageDialog(title, description, imageLink, actionType, link);
 }
 
 void FFacebookSharerCommon::FacebookGameRequest(const FString& message)
@@ -86,7 +86,7 @@ void FFacebookSharerCommon::AndroidThunkCpp_Facebook_ShareDialog(const FString& 
 #endif
 }
 
-void FFacebookSharerCommon::AndroidThunkCpp_Facebook_MessageDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType)
+void FFacebookSharerCommon::AndroidThunkCpp_Facebook_MessageDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType, const FString& link)
 {
 #if PLATFORM_ANDROID
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
@@ -95,14 +95,16 @@ void FFacebookSharerCommon::AndroidThunkCpp_Facebook_MessageDialog(const FString
 		jstring jTitle = Env->NewStringUTF(TCHAR_TO_UTF8(*title));
 		jstring jDescription = Env->NewStringUTF(TCHAR_TO_UTF8(*description));
 		jstring jImageLink = Env->NewStringUTF(TCHAR_TO_UTF8(*imageLink));
+		jstring jLink = Env->NewStringUTF(TCHAR_TO_UTF8(*link));
 
 		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, FacebookMessageDialogMethod,
-			jTitle, jDescription, jImageLink, ToInt(actionType));
+			jTitle, jDescription, jImageLink, ToInt(actionType), jLink);
 
 		// clean up references
 		Env->DeleteLocalRef(jTitle);
 		Env->DeleteLocalRef(jDescription);
 		Env->DeleteLocalRef(jImageLink);
+		Env->DeleteLocalRef(jLink);
 	}
 #endif
 }

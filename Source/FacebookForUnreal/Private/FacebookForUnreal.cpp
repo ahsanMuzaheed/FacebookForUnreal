@@ -7,7 +7,7 @@
 
 #define LOCTEXT_NAMESPACE "FFacebookForUnrealModule"
 
-DEFINE_LOG_CATEGORY(UEFB);
+DEFINE_LOG_CATEGORY(FacebookForUnrealLog);
 
 class FFacebookForUnrealModule : public IFacebookForUnreal
 {
@@ -21,7 +21,7 @@ public:
 void FFacebookForUnrealModule::StartupModule()
 {
 
-//#if PLATFORM_ANDROID || PLATFORM_IOS
+//#if PLATFORM_ANDROID
 	IdentityInterface = MakeShareable(new FFacebookIdentityCommon());
 	SharerInterface = MakeShareable(new FFacebookSharerCommon());
 	UtilsInterface = MakeShareable(new FFacebookUtilsCommon());

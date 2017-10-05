@@ -30,7 +30,7 @@ FFacebookUtilsCommon::~FFacebookUtilsCommon()
 
 bool FFacebookUtilsCommon::IsInternetConnected()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called IsInternetConnected on FacebookUtilsCommon"));
+	UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("Called IsInternetConnected on FacebookUtilsCommon"));
 #if PLATFORM_ANDROID
 	extern bool AndroidThunkCpp_IsInternetConnected();
 	return AndroidThunkCpp_IsInternetConnected();
@@ -46,7 +46,7 @@ bool FFacebookUtilsCommon::IsInternetConnected()
 
 bool AndroidThunkCpp_IsInternetConnected()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("AndroidThunkCpp_IsInternetConnected"));
+	UE_LOG(FacebookForUnrealLog, Warning, TEXT("%s"), TEXT("AndroidThunkCpp_IsInternetConnected"));
 
 	bool bIsConnected = false;
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())

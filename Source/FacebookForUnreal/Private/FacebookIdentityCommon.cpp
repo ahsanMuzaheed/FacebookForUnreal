@@ -15,7 +15,7 @@ static jmethodID FacebookGetAccessTokenMethod;
 
 FFacebookIdentityCommon::FFacebookIdentityCommon()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Initializing FacebookIdentityCommon"));
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("%s"), TEXT("Initializing FacebookIdentityCommon"));
 	Init();
 
 #if PLATFORM_ANDROID
@@ -33,31 +33,32 @@ FFacebookIdentityCommon::~FFacebookIdentityCommon()
 
 void FFacebookIdentityCommon::Init()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Init Subsystem"));
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("%s"), TEXT("Init Subsystem"));
 
 	FBSubsystem = IOnlineSubsystem::Get(TEXT("FACEBOOK"));
 
 	// Init Subsystem
 	FBSubsystem->Init();
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Subsystem Initialization Complete"));
+
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("%s"), TEXT("Subsystem Initialization Complete"));
 }
 
 void FFacebookIdentityCommon::FacebookLogin()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called FacebookLogin in FacebookIdentityCommon"));
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("%s"), TEXT("Called FacebookLogin in FacebookIdentityCommon"));
 	//Use native subsystems' login
 	FBSubsystem->GetIdentityInterface()->Login(0, *(new FOnlineAccountCredentials));
 }
 
 void FFacebookIdentityCommon::FacebookLogout()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called FacebookLogout in FacebookIdentityCommon"));
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("%s"), TEXT("Called FacebookLogout in FacebookIdentityCommon"));
 	FBSubsystem->GetIdentityInterface()->Logout(0);
 }
 
 FString FFacebookIdentityCommon::GetFacebookAccessToken()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called GetFacebookAuthToken in FacebookIdentityCommon"));
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("%s"), TEXT("Called GetFacebookAuthToken in FacebookIdentityCommon"));
 #if PLATFORM_ANDROID
 	extern FString AndroidThunkCpp_FacebookGetAccessToken();
 	return AndroidThunkCpp_FacebookGetAccessToken();
@@ -67,9 +68,11 @@ FString FFacebookIdentityCommon::GetFacebookAccessToken()
 
 bool FFacebookIdentityCommon::IsFacebookLoggedIn()
 {
-	UE_LOG(UEFB, Warning, TEXT("%s"), TEXT("Called IsFacebookLoggedIn in FacebookIdentityCommon"));
 #if PLATFORM_ANDROID
 	ELoginStatus::Type LoginStatus = FBSubsystem->GetIdentityInterface()->GetLoginStatus(0);
+
+	UE_LOG(FacebookForUnrealLog, Log, TEXT("Login Status: %s"), *GetLoginStatusString(LoginStatus));
+
 	if (LoginStatus == ELoginStatus::LoggedIn)
 	{
 		return true;
@@ -81,6 +84,25 @@ bool FFacebookIdentityCommon::IsFacebookLoggedIn()
 inline IOnlineSubsystem* FFacebookIdentityCommon::GetFbSubsystem()
 {
 	return FBSubsystem;
+}
+
+FString FFacebookIdentityCommon::GetLoginStatusString(ELoginStatus::Type EnumValue)
+{
+	switch (EnumValue)
+	{
+	case ELoginStatus::NotLoggedIn:
+		return "NotLoggedIn";
+		break;
+	case ELoginStatus::UsingLocalProfile:
+		return "UsingLocalProfile";
+		break;
+	case ELoginStatus::LoggedIn:
+		return "LoggedIn";
+		break;
+	default:
+		return "Invalid";
+		break;
+	}
 }
 
 /************************************************************************/

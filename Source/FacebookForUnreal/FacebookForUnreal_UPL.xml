@@ -7,6 +7,7 @@
 		<log text="FacebookForUnreal init"/>	
     <setStringFromProperty result="ClientId" ini="Engine" section="OnlineSubsystemFacebook" property="ClientId" default="0"/>
     <setBoolFromProperty result="bEnableGradle" ini="Engine" section="/Script/AndroidRuntimeSettings.AndroidRuntimeSettings" property="bEnableGradle" default="false"/>
+    <setStringFromProperty result="ShareLink" ini="Engine" section="/Script/FacebookForUnrealEditor.FacebookSettings" property="ShareLink" default=""/>
 	</init>
 
   <androidManifestUpdates>
@@ -15,6 +16,17 @@
 		<addAttribute tag="$FBProvider" name="android:authorities" value="com.facebook.app.FacebookContentProvider$S(ClientId)" />
 		<addAttribute tag="$FBProvider" name="android:exported" value="true" />
 		<addElement tag="application" name="FBProvider" />
+
+    <setElement result="FacebookClientId" value="meta-data"/>
+    <addAttribute tag="$FacebookClientId" name="android:name" value="com.Horizon.FacebookForUnreal.ClientId"/>
+    <addAttribute tag="$FacebookClientId" name="android:value" value="$S(ClientId)"/>
+    <addElement tag="application" name="FacebookClientId"/>
+
+    <setElement result="FacebookShareLink" value="meta-data"/>
+    <addAttribute tag="$FacebookShareLink" name="android:name" value="com.Horizon.FacebookForUnreal.ShareLink"/>
+    <addAttribute tag="$FacebookShareLink" name="android:value" value="$S(ShareLink)"/>
+    <addElement tag="application" name="FacebookShareLink"/>
+    
   </androidManifestUpdates>
 
   <!-- optional additions to proguard -->
@@ -62,6 +74,7 @@ import android.os.Build;
 
 // Facebook imports
 import com.facebook.FacebookSdk;
+
     </insert>
 	</gameActivityImportAdditions>
 	
@@ -70,56 +83,56 @@ import com.facebook.FacebookSdk;
 	<gameActivityClassAdditions>
     <insert>
       private FacebookShare mFacebookShare;
-      
+
       public void AndroidThunkJava_Facebook_ShareDialog(String ContentTitle, String ContentDescription,
-                                                         String imageLink, int actionType) {
-        if (mFacebookShare != null) {
-            mFacebookShare.shareDialog(ContentTitle, ContentDescription, imageLink, actionType);
-        }
-    }
+      String imageLink, int actionType) {
+      if (mFacebookShare != null) {
+      mFacebookShare.shareDialog(ContentTitle, ContentDescription, imageLink, actionType);
+      }
+      }
 
-    public void AndroidThunkJava_Facebook_MessageDialog(String ContentTitle, String ContentDescription,
-                                                           String imageLink, int actionType) {
-        if (mFacebookShare != null) {
-            mFacebookShare.messageDialog(ContentTitle, ContentDescription, imageLink, actionType);
-        }
-    }
+      public void AndroidThunkJava_Facebook_MessageDialog(String ContentTitle, String ContentDescription,
+      String imageLink, int actionType, String link) {
+      if (mFacebookShare != null) {
+      mFacebookShare.messageDialog(ContentTitle, ContentDescription, imageLink, actionType, link);
+      }
+      }
 
-    public void AndroidThunkJava_Facebook_GameRequest(String message) {
-        if (mFacebookShare != null) {
-            mFacebookShare.GameRequest(message);
-        }
-    }
+      public void AndroidThunkJava_Facebook_GameRequest(String message) {
+      if (mFacebookShare != null) {
+      mFacebookShare.GameRequest(message);
+      }
+      }
 
-    public boolean AndroidThunkJava_IsInternetConnected()
-    {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      public boolean AndroidThunkJava_IsInternetConnected()
+      {
+      ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            Network[] networks = cm.getAllNetworks();
-            NetworkInfo networkInfo;
-            for (Network networkLoc : networks) {
-                networkInfo = cm.getNetworkInfo(networkLoc);
-                if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
-                    return true;
-                }
-            }
-        }
-        else
-        {
-            if (cm != null) {
-                NetworkInfo[] networkInfo = cm.getAllNetworkInfo();
-                if (networkInfo != null) {
-                    for (NetworkInfo networkInfoLoc : networkInfo) {
-                        if (networkInfoLoc.getState() == NetworkInfo.State.CONNECTED) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
+      Network[] networks = cm.getAllNetworks();
+      NetworkInfo networkInfo;
+      for (Network networkLoc : networks) {
+      networkInfo = cm.getNetworkInfo(networkLoc);
+      if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
+      return true;
+      }
+      }
+      }
+      else
+      {
+      if (cm != null) {
+      NetworkInfo[] networkInfo = cm.getAllNetworkInfo();
+      if (networkInfo != null) {
+      for (NetworkInfo networkInfoLoc : networkInfo) {
+      if (networkInfoLoc.getState() == NetworkInfo.State.CONNECTED) {
+      return true;
+      }
+      }
+      }
+      }
+      }
+      return false;
+      }
     </insert>
 	</gameActivityClassAdditions>
 	
@@ -130,7 +143,11 @@ import com.facebook.FacebookSdk;
 	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
 	<gameActivityOnCreateAdditions>
     <insert>
-      mFacebookShare = new FacebookShare(this);
+
+      final String ClientId = _bundle.getString("com.Horizon.FacebookForUnreal.ClientId");
+      final String ShareLink = _bundle.getString("com.Horizon.FacebookForUnreal.ShareLink");
+
+      mFacebookShare = new FacebookShare(this, ClientId, ShareLink);
       mFacebookShare.Init();
     </insert>
 	</gameActivityOnCreateAdditions>

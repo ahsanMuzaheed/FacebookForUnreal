@@ -66,3 +66,4 @@ inline const uint8 ToInt(EActionType actionType)
 
 	return 0;
 }
+

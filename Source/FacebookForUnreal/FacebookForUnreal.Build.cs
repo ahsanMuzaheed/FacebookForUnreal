@@ -24,14 +24,9 @@ public class FacebookForUnreal : ModuleRules
         }
 
 
-        PublicIncludePaths.AddRange( new string[] 
-            {
-                "FacebookForUnreal/Public"
-            });
-
+        PublicIncludePaths.AddRange( new string[] { "FacebookForUnreal/Public" });
 
         PrivateIncludePaths.AddRange( new string[] { "FacebookForUnreal/Private" });
-
 
         PublicDependencyModuleNames.AddRange(new string[]
             {

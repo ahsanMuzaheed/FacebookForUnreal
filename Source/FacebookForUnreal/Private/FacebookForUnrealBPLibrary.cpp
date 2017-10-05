@@ -28,9 +28,9 @@ void UFacebookForUnrealBPLibrary::FacebookShareDialog(const FString & title, con
 	IFacebookForUnreal::Get().GetSharerInterface()->FacebookShareDialog(title, description, imageLink, actionType);
 }
 
-void UFacebookForUnrealBPLibrary::FacebookMessageDialog(const FString & title, const FString & description, const FString & imageLink, EActionType actionType)
+void UFacebookForUnrealBPLibrary::FacebookMessageDialog(const FString & title, const FString & description, const FString & imageLink, EActionType actionType, const FString & link)
 {
-	IFacebookForUnreal::Get().GetSharerInterface()->FacebookMessageDialog(title, description, imageLink, actionType);
+	IFacebookForUnreal::Get().GetSharerInterface()->FacebookMessageDialog(title, description, imageLink, actionType, link);
 }
 
 void UFacebookForUnrealBPLibrary::FacebookGameRequest(const FString & message)

@@ -10,33 +10,33 @@
  * 
  */
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FLoginComplete, FString);
-typedef FLoginComplete::FDelegate FLoginCompleteDelegate;
-
-#define DEFINE_UEFB_DELEGATE_BASE(DelegateName) \
-public: \
-	F##DelegateName DelegateName##Delegates; \
-	virtual FDelegateHandle Add##DelegateName##DelegateHandle(const F##DelegateName##Delegate& Delegate) \
-	{ \
-		DelegateName##Delegates.Add(Delegate); \
-		return Delegate.GetHandle(); \
-	} \
-	virtual void Clear##DelegateName##Delegate_Handle(FDelegateHandle& Handle) \
-	{ \
-		DelegateName##Delegates.Remove(Handle); \
-		Handle.Reset(); \
-	}\
-	virtual void ClearAll##DelegateName##Delegate_Handle() \
-	{ \
-		DelegateName##Delegates.Clear(); \
-	}
-
-#define DEFINE_UEFB_DELEGATE_ONE_PARAM(DelegateName, Param1Type) \
-	DEFINE_UEFB_DELEGATE_BASE(DelegateName) \
-	virtual void Trigger##DelegateName##Delegates(Param1Type Param1) \
-	{ \
-		DelegateName##Delegates.Broadcast(Param1); \
-	}
+//DECLARE_MULTICAST_DELEGATE_OneParam(FLoginComplete, FString);
+//typedef FLoginComplete::FDelegate FLoginCompleteDelegate;
+//
+//#define DEFINE_UEFB_DELEGATE_BASE(DelegateName) \
+//public: \
+//	F##DelegateName DelegateName##Delegates; \
+//	virtual FDelegateHandle Add##DelegateName##DelegateHandle(const F##DelegateName##Delegate& Delegate) \
+//	{ \
+//		DelegateName##Delegates.Add(Delegate); \
+//		return Delegate.GetHandle(); \
+//	} \
+//	virtual void Clear##DelegateName##Delegate_Handle(FDelegateHandle& Handle) \
+//	{ \
+//		DelegateName##Delegates.Remove(Handle); \
+//		Handle.Reset(); \
+//	}\
+//	virtual void ClearAll##DelegateName##Delegate_Handle() \
+//	{ \
+//		DelegateName##Delegates.Clear(); \
+//	}
+//
+//#define DEFINE_UEFB_DELEGATE_ONE_PARAM(DelegateName, Param1Type) \
+//	DEFINE_FacebookForUnrealLog_DELEGATE_BASE(DelegateName) \
+//	virtual void Trigger##DelegateName##Delegates(Param1Type Param1) \
+//	{ \
+//		DelegateName##Delegates.Broadcast(Param1); \
+//	}
 
 
 

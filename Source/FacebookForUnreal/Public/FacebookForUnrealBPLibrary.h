@@ -41,7 +41,7 @@ class UFacebookForUnrealBPLibrary : public UBlueprintFunctionLibrary
 		static void FacebookShareDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Facebook Message Dialog"), Category = "Facebook")
-		static void FacebookMessageDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType);
+		static void FacebookMessageDialog(const FString& title, const FString& description, const FString& imageLink, EActionType actionType, const FString& link);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Facebook Game Invite"), Category = "Facebook")
 		static void FacebookGameRequest(const FString& message);
